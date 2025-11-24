@@ -2,7 +2,7 @@
 
 Name: Ayush Patel
 Student ID: B00951805
-Date: January 2025
+Date: 22 January, 2025
 
 ## Deployment Information
 - Netlify URL: https://my-portfolio-lab6.netlify.app/
@@ -15,8 +15,7 @@ This is my personal portfolio website built with React. I added interactive feat
 ## Technologies Used
 - JavaScript, React, React Router, Bootstrap, Express.js, Node.js.
 
-I did manual testing for all features:
-
+## Features:
 1. Theme Switcher.
 2. Skill List.
 3. Projects Page.
@@ -24,12 +23,8 @@ I did manual testing for all features:
 5. Responsive Design.
 6. 404 Page.
 
-## Installation Instructions
-
 
 ## API Endpoints
-
-Backend runs on http://localhost:3001/api
 1. GET /api/projects - Returns all projects
 2. GET /api/weather?city=Halifax - Returns weather data
 
