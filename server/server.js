@@ -28,10 +28,6 @@ function getProjectsData()
     }
 }
 
-app.get('/api/health', (req, res) => {
-    res.json({ status: 'OK', message: 'Server is running' });
-});
-
 app.get('/api/projects', (req, res) => {
     try
     {
@@ -100,7 +96,6 @@ app.use('/api/*', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
     console.log(`API endpoints:`);
-    console.log(`  - http://localhost:${PORT}/api/health`);
     console.log(`  - http://localhost:${PORT}/api/projects`);
     console.log(`  - http://localhost:${PORT}/api/weather?city=Halifax`);
 });
