@@ -198,7 +198,7 @@ function Contact()
                     
                     {draftSaved && !submitSuccess && (
                         <div className="alert alert-info mb-3">
-                            Draft saved. Your form data has been restored.
+                            Draft saved.
                         </div>
                     )}
 
