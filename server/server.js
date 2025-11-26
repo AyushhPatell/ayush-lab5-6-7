@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { readFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
@@ -26,6 +26,44 @@ function getProjectsData()
         console.log('Error reading projects:', error);
         return [];
     }
+}
+
+function getMessagesData()
+{
+    try
+    {
+        const filePath = join(__dirname, 'data', 'messages.json');
+        const data = readFileSync(filePath, 'utf8');
+        return JSON.parse(data);
+    }
+    catch (error)
+    {
+        console.log('Error reading messages:', error);
+        return [];
+    }
+}
+
+function saveMessagesData(messages)
+{
+    try
+    {
+        const filePath = join(__dirname, 'data', 'messages.json');
+        writeFileSync(filePath, JSON.stringify(messages, null, 2), 'utf8');
+    }
+    catch (error)
+    {
+        console.log('Error saving messages:', error);
+        throw error;
+    }
+}
+
+function sanitizeInput(input)
+{
+    if (typeof input !== 'string')
+    {
+        return '';
+    }
+    return input.trim().replace(/[<>]/g, '');
 }
 
 app.get('/api/projects', (req, res) => {
@@ -89,6 +127,49 @@ app.get('/api/weather', async (req, res) => {
     }
 });
 
+app.post('/api/contact', (req, res) => {
+    try
+    {
+        const { name, email, subject, message } = req.body;
+
+        if (!name || !email || !subject || !message)
+        {
+            return res.status(400).json({ error: 'All fields are required' });
+        }
+
+        const sanitizedData = {
+            name: sanitizeInput(name),
+            email: sanitizeInput(email),
+            subject: sanitizeInput(subject),
+            message: sanitizeInput(message)
+        };
+
+        const messages = getMessagesData();
+        messages.push(sanitizedData);
+        saveMessagesData(messages);
+
+        res.json({ success: true, message: 'Message saved successfully' });
+    }
+    catch (error)
+    {
+        console.log('Error saving message:', error);
+        res.status(500).json({ error: 'Failed to save message' });
+    }
+});
+
+app.get('/api/messages', (req, res) => {
+    try
+    {
+        const messages = getMessagesData();
+        res.json(messages);
+    }
+    catch (error)
+    {
+        console.log('Error getting messages:', error);
+        res.status(500).json({ error: 'Failed to get messages' });
+    }
+});
+
 app.use('/api/*', (req, res) => {
     res.status(404).json({ error: 'Route not found' });
 });
@@ -98,5 +179,7 @@ app.listen(PORT, () => {
     console.log(`API endpoints:`);
     console.log(`  - http://localhost:${PORT}/api/projects`);
     console.log(`  - http://localhost:${PORT}/api/weather?city=Halifax`);
+    console.log(`  - http://localhost:${PORT}/api/contact (POST)`);
+    console.log(`  - http://localhost:${PORT}/api/messages (GET)`);
 });
 

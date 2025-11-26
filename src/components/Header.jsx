@@ -49,6 +49,22 @@ function Header({ theme, toggleTheme })
                                 </Link>
                             </li>
                             <li className="nav-item">
+                                <Link
+                                    className={`nav-link ${location.pathname === '/contact' ? 'active' : ''}`}
+                                    to="/contact"
+                                >
+                                    Contact
+                                </Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link
+                                    className={`nav-link ${location.pathname === '/messages' ? 'active' : ''}`}
+                                    to="/messages"
+                                >
+                                    Messages
+                                </Link>
+                            </li>
+                            <li className="nav-item">
                                 <button
                                     className="btn btn-outline-secondary ms-2"
                                     onClick={toggleTheme}
